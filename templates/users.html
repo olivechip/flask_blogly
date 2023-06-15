@@ -8,6 +8,10 @@
 <p>{{msg}}</p>
 {% endfor %}
 
+{% if not users %}
+<p>There are no users. Please add a user! </p>
+{% endif %}
+
 <ul>
     {% for u in users %}
     <li><a href="/users/{{u.id}}">{{u.first_name}} {{u.last_name}}</a></li>
@@ -15,7 +19,7 @@
 </ul>
 
 <form action="/users/new">
-    <button>Add user</button>
+    <button class="add">Add user</button>
 </form>
 
 

@@ -18,15 +18,15 @@ connect_db(app)
 app.app_context( ).push( )
 db.create_all()
 
-user = User(first_name = 'Oliver', last_name = 'Chang')
-db.session.add(user)
-user = User(first_name = 'Cloud', last_name = 'Strife')
-db.session.add(user)
-user = User(first_name = 'Kitty', last_name = 'Smalls')
-db.session.add(user)
-user = User(first_name = 'Sasuke', last_name = 'Uchiha')
-db.session.add(user)
-db.session.commit()
+# user = User(first_name = 'Oliver', last_name = 'Chang')
+# db.session.add(user)
+# user = User(first_name = 'Cloud', last_name = 'Strife')
+# db.session.add(user)
+# user = User(first_name = 'Kitty', last_name = 'Smalls')
+# db.session.add(user)
+# user = User(first_name = 'Sasuke', last_name = 'Uchiha')
+# db.session.add(user)
+# db.session.commit()
 
 @app.route('/')
 def home_page():
@@ -66,7 +66,6 @@ def edit_user(user_id):
 
 @app.route('/users/<int:user_id>/edit', methods=['POST'])
 def edited_user(user_id):
-    # user_id = user_id
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
     image_url = request.form["image_url"]
@@ -82,4 +81,13 @@ def edited_user(user_id):
     db.session.commit()
 
     flash(f'{old_fn} {old_ln} has been updated to {first_name} {last_name}!')
+    return redirect('/users')
+
+@app.route('/users/<int:user_id>/delete', methods=['POST'])
+def delete_user(user_id):
+    user = User.query.session.get(User, user_id)
+    User.query.filter_by(id=user_id).delete()
+    db.session.commit()
+
+    flash(f"{user.first_name} {user.last_name} has been deleted!")
     return redirect('/users')

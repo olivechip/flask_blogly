@@ -1,3 +1,44 @@
+.add {
+    color: white;
+    background-color: green;
+    border: none;
+    border-radius: 10%;
+    padding: 0.8rem;
+}
+
+.save {
+    color: white;
+    background-color: green;
+    border: none;
+    border-radius: 10%;
+    padding: 0.8rem;
+}
+
+.edit {
+    color: white;
+    background-color: #4267B2;
+    border: none;
+    border-radius: 10%;
+    padding: 0.8rem;
+}
+
+.delete {
+    color: white;
+    background-color: red;
+    border: none;
+    border-radius: 10%;
+    padding: 0.8rem;
+}
+
+.cancel {
+    color: grey;
+    background-color: white;
+    border-color: grey;
+    border-radius: 10%;
+    box-shadow: none;
+    padding: 0.8rem;
+}
+
 img {
     max-width: 250px;
     max-height: 250px;

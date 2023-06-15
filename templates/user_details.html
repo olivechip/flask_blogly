@@ -7,8 +7,12 @@
 <h1>{{user.first_name}} {{user.last_name}}</h1>
 
 <form action="/users/{{user.id}}/edit">
-    <button>Edit</button>
-    <button formaction="/delete_user">Delete</button>
+    <button class="edit">Edit</button>
+    <button class ="delete" formaction="/users/{{user.id}}/delete" formmethod="POST">Delete</button>
 </form>
+
+<p>
+    <a href="/users">Go Back</a>
+</p>
 
 {% endblock %}
