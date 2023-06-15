@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Blogly - Main Page{% endblock %}
+{% block content %}
+
+<h1>Users</h1>
+
+{% for msg in get_flashed_messages() %}
+<p>{{msg}}</p>
+{% endfor %}
+
+<ul>
+    {% for u in users %}
+    <li><a href="/users/{{u.id}}">{{u.first_name}} {{u.last_name}}</a></li>
+    {% endfor %}
+</ul>
+
+<form action="/users/new">
+    <button>Add user</button>
+</form>
+
+
+{% endblock %}

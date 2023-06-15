@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Blogly - User Details{% endblock %}
+{% block content %}
+
+<img src="{{user.image_url}}" alt="user_profile_pic" >
+<h1>{{user.first_name}} {{user.last_name}}</h1>
+
+<form action="/users/{{user.id}}/edit">
+    <button>Edit</button>
+    <button formaction="/delete_user">Delete</button>
+</form>
+
+{% endblock %}
