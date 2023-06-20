@@ -10,7 +10,7 @@ app.config['SECRET_KEY'] = "my_secret_key"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_ECHO'] = False
 
 toolbar = DebugToolbarExtension(app)
 
@@ -46,7 +46,7 @@ def added_user():
     """sends the form data to create a user and adds to database"""
     first_name = request.form['first_name']
     last_name = request.form['last_name']
-    image_url = request.form['image_url']
+    image_url = request.form['image_url'] or None
 
     new_user = User(first_name=first_name, last_name=last_name, image_url=image_url)
     db.session.add(new_user)
@@ -72,7 +72,7 @@ def edited_user(user_id):
     """sends form data to edit user and database"""
     first_name = request.form['first_name']
     last_name = request.form['last_name']
-    image_url = request.form['image_url']
+    image_url = request.form['image_url'] or None
 
     old_fn = request.form['old_fn']
     old_ln = request.form['old_ln']

@@ -19,13 +19,11 @@ class UserViewsTestCase(TestCase):
         """Clean up any existing users."""
         User.query.delete()
 
-        user = User(first_name="TestFirstName", last_name="TestLastName")
+        user = User(first_name="TestFirstName", last_name="TestLastName", image_url="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2023-03/puppy-dog-mc-230321-03-b700d4.jpg")
         db.session.add(user)
         db.session.commit()
 
-        self.user_id = user.id
-        self.user_fn = user.first_name
-        self.user_ln = user.last_name
+        self.user = user
 
     def tearDown(self):
         """Clean up failed transactions."""
@@ -55,61 +53,52 @@ class UserViewsTestCase(TestCase):
             self.assertEqual(res.status_code, 200)
             self.assertIn('Create a User', html)
 
-    # def test_added_user(self):
-    #     with app.test_client() as client:
-    #         # test post/add data was sent and redirected
-    #         data = {'first_name': 'TestFirstName', 'last_name': 'TestLastName'}
-    #         res = client.post('/users/new', data=data)
-    #         self.assertIn(res.status_code, [200, 302])
+    def test_added_user(self):
+        with app.test_client() as client:
 
-    #         # test redirect to /users
-    #         res = client.get('/users')
-    #         html = res.get_data(as_text=True)
-    #         self.assertEqual(res.status_code, 200)
-    #         self.assertIn('TestFirst TestLast has been added!', html)
+            # test post/add data was sent and redirected
+            data = {'first_name': self.user.first_name, 'last_name': self.user.last_name,
+                    'image_url': 'https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2023-03/puppy-dog-mc-230321-03-b700d4.jpg'}
+            res = client.post('/users/new', data=data)
+            self.assertIn(res.status_code, [200, 302])
+
+            # test redirect to /users
+            res = client.get('/users')
+            html = res.get_data(as_text=True)
+            self.assertIn(res.status_code, [200, 302])
+            self.assertIn(f'{self.user.first_name} {self.user.last_name} has been added!', html)
     
     def test_show_user_details(self):
         with app.test_client() as client:
-            res = client.get(f'/users/{self.user_id}')
+            res = client.get(f'/users/{self.user.id}')
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn(f"{self.user_fn} {self.user_ln}", html)
+            self.assertIn(f"{self.user.first_name} {self.user.last_name}", html)
         
-            res = client.get(f'/users/-{self.user_id}')
+            res = client.get(f'/users/-{self.user.id}')
             self.assertEqual(res.status_code, 404)
 
     def test_edit_user(self):
         with app.test_client() as client:
-            res = client.get(f'/users/{self.user_id}/edit')
+            res = client.get(f'/users/{self.user.id}/edit')
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
             self.assertIn(f"Edit a User", html)
 
-            res = client.get(f'/users/-{self.user_id}')
+            res = client.get(f'/users/-{self.user.id}')
             self.assertEqual(res.status_code, 404)
 
-    # def test_edited_user(self):
-    #     with app.test_client() as client:
-
-    #         # test post/edit data was sent and redirected
-    #         data = {'first_name': self.user_fn, 'last_name': self.user_ln}
-    #         res = client.post(f'/users/{self.user_id}/edit', data=data)
-    #         self.assertEqual(res.status_code, 302)
-
-    #         # test redirect to /users
-    #         res = client.get('/users')
-    #         html = res.get_data(as_text=True)
-
-    #         self.assertEqual(res.status_code, 200)
-    #         self.assertIn('has been updated', html)
-
-    def test_delete_user(self):
+    def test_edited_user(self):
         with app.test_client() as client:
 
-            # test post/delete data was sent and redirected
-            res = client.post(f'/users/{self.user_id}/delete')
+            # test post/edit data was sent and redirected
+            data = {'first_name': self.user.first_name, 'last_name': self.user.last_name, 
+                    'image_url': 'https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2023-03/puppy-dog-mc-230321-03-b700d4.jpg', 
+                    'old_fn': 'OldTestFN', 'old_ln': 'OldTesLN'}
+
+            res = client.post(f'/users/{self.user.id}/edit', data=data)
             self.assertEqual(res.status_code, 302)
 
             # test redirect to /users
@@ -117,4 +106,18 @@ class UserViewsTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn(f'{self.user_fn} {self.user_ln} has been deleted!', html)
+            self.assertIn('has been updated', html)
+
+    def test_delete_user(self):
+        with app.test_client() as client:
+
+            # test post/delete data was sent and redirected
+            res = client.post(f'/users/{self.user.id}/delete')
+            self.assertEqual(res.status_code, 302)
+
+            # test redirect to /users
+            res = client.get('/users')
+            html = res.get_data(as_text=True)
+
+            self.assertEqual(res.status_code, 200)
+            self.assertIn(f'{self.user.first_name} {self.user.last_name} has been deleted!', html)
