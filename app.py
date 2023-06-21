@@ -26,7 +26,7 @@ def home_page():
 @app.route('/users')
 def show_users():
     """shows a list of all users"""
-    users = User.query.all()
+    users = User.order_by_last_first()
     return render_template('users.html', users=users)
 
 @app.route('/users/new')

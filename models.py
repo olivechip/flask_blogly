@@ -16,6 +16,10 @@ class User(db.Model):
     last_name = db.Column(db.String(30), nullable = False)
     image_url = db.Column(db.String, default = "https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small/default-avatar-profile-icon-of-social-media-user-vector.jpg")
 
+    @classmethod
+    def order_by_last_first(cls):
+        return cls.query.order_by(User.last_name, User.first_name).all()
+
     def __repr__(self):
         u = self
         return f"id={u.id} first_name={u.first_name} last_name={u.last_name}"
