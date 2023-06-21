@@ -66,7 +66,7 @@ class UserViewsTestCase(TestCase):
             res = client.get('/users')
             html = res.get_data(as_text=True)
             self.assertIn(res.status_code, [200, 302])
-            self.assertIn(f'{self.user.first_name} {self.user.last_name} has been added!', html)
+            self.assertIn(f'{self.user.get_full_name()} has been added!', html)
     
     def test_show_user_details(self):
         with app.test_client() as client:
@@ -74,7 +74,7 @@ class UserViewsTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn(f"{self.user.first_name} {self.user.last_name}", html)
+            self.assertIn(f"{self.user.get_full_name()}", html)
         
             res = client.get(f'/users/-{self.user.id}')
             self.assertEqual(res.status_code, 404)
@@ -106,7 +106,7 @@ class UserViewsTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn('has been updated', html)
+            self.assertIn(f'has been updated to {self.user.get_full_name()}!', html)
 
     def test_delete_user(self):
         with app.test_client() as client:
@@ -120,4 +120,4 @@ class UserViewsTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn(f'{self.user.first_name} {self.user.last_name} has been deleted!', html)
+            self.assertIn(f'{self.user.get_full_name()} has been deleted!', html)

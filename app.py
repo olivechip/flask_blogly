@@ -18,13 +18,6 @@ connect_db(app)
 app.app_context().push()
 db.create_all()
 
-"""Sample Users"""
-kitty = User(first_name='Kitty', last_name='Smalls', image_url='https://bestfriends.org/sites/default/files/story_images/Smooches_courtesyofJaNaeGoodrich.jpg')
-puppy = User(first_name='Puppy', last_name='Biggs', image_url='https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2023-03/puppy-dog-mc-230321-03-b700d4.jpg')
-db.session.add(kitty)
-db.session.add(puppy)
-db.session.commit()
-
 @app.route('/')
 def home_page():
     """shows the home page"""
@@ -52,7 +45,7 @@ def added_user():
     db.session.add(new_user)
     db.session.commit()
 
-    flash(f'{first_name} {last_name} has been added!')
+    flash(f'{new_user.get_full_name()} has been added!')
     return redirect('/users')
 
 @app.route('/users/<int:user_id>')
@@ -80,11 +73,14 @@ def edited_user(user_id):
     user = User.query.session.get(User, user_id)
     user.first_name = first_name
     user.last_name = last_name
-    user.image_url = image_url
+    if image_url is None:
+        user.image_url = 'https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small/default-avatar-profile-icon-of-social-media-user-vector.jpg'
+    else:
+        user.image_url = image_url
 
     db.session.commit()
 
-    flash(f'{old_fn} {old_ln} has been updated to {first_name} {last_name}!')
+    flash(f'{old_fn} {old_ln} has been updated to {user.get_full_name()}!')
     return redirect('/users')
 
 @app.route('/users/<int:user_id>/delete', methods=['POST'])
@@ -94,5 +90,5 @@ def delete_user(user_id):
     User.query.filter_by(id=user_id).delete()
     db.session.commit()
 
-    flash(f"{user.first_name} {user.last_name} has been deleted!")
+    flash(f"{user.get_full_name()} has been deleted!")
     return redirect('/users')
