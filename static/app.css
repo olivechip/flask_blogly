@@ -1,3 +1,19 @@
+.container {
+    display: flex;
+}
+  
+.image-container {
+    flex-shrink: 0;
+}
+
+img {
+    margin-right: 1.5rem;
+}
+  
+.content-container {
+    flex-grow: 1;
+}
+
 .add {
     color: white;
     background-color: green;

@@ -16,6 +16,10 @@ class User(db.Model):
     last_name = db.Column(db.String, nullable = False)
     image_url = db.Column(db.String, default = "https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small/default-avatar-profile-icon-of-social-media-user-vector.jpg")
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     @classmethod
     def order_by_last_first(cls):
         return cls.query.order_by(User.last_name, User.first_name).all()
@@ -31,8 +35,8 @@ class Post(db.Model):
     __tablename__ = 'posts'
 
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    title = db.Column(db.Text(300), nullable = False)
-    content = db.Column(db.Text(40000), nullable = False)
+    title = db.Column(db.Text, nullable = False)
+    content = db.Column(db.Text, nullable = False)
     created_at = db.Column(db.DateTime, nullable = False)
     op = db.Column(db.Integer, db.ForeignKey('users.id'))
 

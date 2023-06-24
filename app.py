@@ -2,7 +2,7 @@
 
 from flask import Flask, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 
@@ -10,7 +10,7 @@ app.config['SECRET_KEY'] = "my_secret_key"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = False
+app.config['SQLALCHEMY_ECHO'] = True
 
 toolbar = DebugToolbarExtension(app)
 
@@ -52,7 +52,8 @@ def added_user():
 def show_user_details(user_id):
     """shows the user details page"""
     user = User.query.get_or_404(user_id)
-    return render_template('user_details.html', user=user)
+    posts = Post.query.filter(Post.op == user_id).all()
+    return render_template('user_details.html', user=user, posts=posts)
 
 @app.route('/users/<int:user_id>/edit')
 def edit_user(user_id):
@@ -92,3 +93,22 @@ def delete_user(user_id):
 
     flash(f"{user.get_full_name()} has been deleted!")
     return redirect('/users')
+
+@app.route('/users/<int:user_id>/posts/new')
+def add_post(user_id):
+    """shows form to add new post for user"""
+    user = User.query.get_or_404(user_id)
+    return render_template('add_post.html', user=user)
+
+@app.route('/users/<int:user_id>/posts/new', methods=['POST'])
+def added_post(user_id):
+    """sends post data to add post to user and database"""
+    title = request.form['post_title']
+    content = request.form['post_content']
+
+    new_post = Post(title=title, content=content, created_at= db.func.now(), op=user_id)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
