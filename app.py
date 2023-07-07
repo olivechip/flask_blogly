@@ -111,6 +111,7 @@ def added_post(user_id):
     db.session.add(new_post)
     db.session.commit()
 
+    flash(f"Post '{new_post.title}' was created!")
     return redirect(f'/users/{user_id}')
 
 @app.route('/posts/<int:post_id>')
@@ -138,6 +139,7 @@ def edited_post(post_id):
     db.session.add(post)
     db.session.commit()
 
+    flash(f"Post '{post.title}' was updated!")
     return redirect(f'/posts/{post.id}')
 
 @app.route('/posts/<int:post_id>/delete', methods=['POST'])
@@ -147,4 +149,5 @@ def delete_post(post_id):
     Post.query.filter_by(id=post_id).delete()
     db.session.commit()
 
+    flash(f"Post '{post.title}' was deleted!")
     return redirect(f'/users/{post.op}')
