@@ -15,7 +15,7 @@
 
 <ul>
     {% for u in users %}
-    <li><a href="/users/{{u.id}}">{{ u.get_full_name() }}</a></li>
+    <li><a href="/users/{{u.id}}">{{ u.full_name }}</a></li>
     {% endfor %}
 </ul>
 

@@ -1,8 +1,7 @@
 from unittest import TestCase
-import json
 
 from app import app
-from models import db, User
+from models import db, User, Post
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test'
 app.config['SQLALCHEMY_ECHO'] = False
@@ -121,3 +120,38 @@ class UserViewsTestCase(TestCase):
 
             self.assertEqual(res.status_code, 200)
             self.assertIn(f'{self.user.get_full_name()} has been deleted!', html)
+
+# class PostViewsTestCase(TestCase):
+#     """Tests for model for Posts."""
+
+#     def setUp(self):
+#         """Clean up any existing posts."""
+#         Post.query.delete()
+
+#         post = Post(title="test_title", content="test_content", created_at=db.func.now(), op=1)
+#         db.session.add(post)
+#         db.session.commit()
+
+#         self.post = post
+
+#     def tearDown(self):
+#         """Clean up failed transactions."""
+#         db.session.rollback()
+
+#     def test_add_post(self):
+#         with app.test_client() as client:
+
+#             res = client.get(f'/users/{self.post.op}/posts/new')
+#             self.assertEqual(res.status_code, 200)
+
+#     def test_added_post(self):
+#         with app.test_client() as client:
+
+#             data = {'title': self.post.title, 
+#                 'content': self.post.content, 
+#                 'created_at': self.post.created_at, 
+#                 'op': self.post.op}
+
+#             res = client.post(f'/users/{self.post.op}/posts/new', data=data)
+#             self.assertEqual(res.status_code, 200)
+#             self.assertEqual(res.status_code, 302)

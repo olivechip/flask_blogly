@@ -15,3 +15,6 @@ post1 = Post(title='All Alone', content="sometimes i'm alone, sometimes i'm not"
 post2 = Post(title='catjam', content="meow~ meow~ meow~!!!", created_at=db.func.now(), op=1)
 post3 = Post(title='Dear Owner', content="Are you going to feed me?!", created_at=db.func.now(), op=2)
 post4 = Post(title='Steamed Hams', content="I smell bacon! I want bacon!!", created_at=db.func.now(), op=2)
+
+db.session.add_all([post1, post2, post3, post4])
+db.session.commit()
