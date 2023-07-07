@@ -106,7 +106,7 @@ def added_post(user_id):
     title = request.form['post_title']
     content = request.form['post_content']
 
-    new_post = Post(title=title, content=content, created_at= db.func.now(), op=user_id)
+    new_post = Post(title=title, content=content, created_at=db.func.now(), op=user_id)
 
     db.session.add(new_post)
     db.session.commit()
@@ -147,4 +147,4 @@ def delete_post(post_id):
     Post.query.filter_by(id=post_id).delete()
     db.session.commit()
 
-    return redirect(f'users/{post.op}')
+    return redirect(f'/users/{post.op}')
