@@ -1,6 +1,6 @@
 # flask_blogly
 
-This application allows the client to create, edit, and delete users from a local PostgreSQL database using Python, Flask, and SQLAlchemy. Must create a database named "blogly".
+This application allows the client to create, read, update, and delete users & posts from a local PostgreSQL database using Python, Flask, and SQLAlchemy. Must create a database named "blogly".
 
 - app.py holds all the main application and its functions;
 - models.py holds the main 'User', 'Post' models and database functions;
