@@ -44,7 +44,7 @@ class Post(db.Model):
 
     @property
     def friendly_date(self):
-        return self.created_at.strftime("%a %b %-d %Y, %-I:%-M %p")
+        return self.created_at.strftime("%a %b %-d %Y, %-I:%M %p")
 
     @classmethod
     def show_recent(cls):
