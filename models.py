@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -40,3 +41,11 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable = False)
     created_at = db.Column(db.DateTime, nullable = False)
     op = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
+
+    @property
+    def friendly_date(self):
+        return self.created_at.strftime("%a %b %-d %Y, %-I:%-M %p")
+
+    @classmethod
+    def show_recent(cls):
+        return cls.query.order_by(Post.created_at.desc()).limit(5).all()

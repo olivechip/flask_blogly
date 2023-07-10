@@ -21,7 +21,8 @@ db.create_all()
 @app.route('/')
 def home_page():
     """shows the home page"""
-    return render_template('home_page.html')
+    posts = Post.show_recent()
+    return render_template('home_page.html', posts=posts)
 
 @app.route('/users')
 def show_users():

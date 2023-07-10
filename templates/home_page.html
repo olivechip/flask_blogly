@@ -5,6 +5,14 @@
 
 <h1>Welcome to Blogly!</h1>
 
+<h2>Blogly Recent Posts</h2>
+
+{% for p in posts %}
+    <h3>{{p.title}}</h3>
+    <p>{{p.content}}</p>
+    <p><small>By {{p.user.full_name}} on {{p.friendly_date}}</small></p>
+{% endfor %}
+
 <a href="/users">Continue to Users</a>
 
 {% endblock %}
