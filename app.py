@@ -152,3 +152,7 @@ def delete_post(post_id):
 
     flash(f"Post '{post.title}' was deleted!")
     return redirect(f'/users/{post.op}')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
