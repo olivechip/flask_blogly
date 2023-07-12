@@ -49,3 +49,21 @@ class Post(db.Model):
     @classmethod
     def show_recent(cls):
         return cls.query.order_by(Post.created_at.desc()).limit(5).all()
+
+class PostTag(db.Model):
+    __tablename__ = 'post_tags'
+
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key = True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key = True)
+
+class Tag(db.Model):
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    name = db.Column(db.Text, nullable = False, unique = True)
+
+    @classmethod
+    def alphabetical(cls):
+        return cls.query.order_by(Tag.name).all()
+
+    posts = db.relationship('Post', secondary='post_tags', backref='tags', cascade='all, delete')

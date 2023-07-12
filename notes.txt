@@ -1,0 +1,2 @@
+just finished adding tags to posts on homepg, tag view routes
+need to add view routes for tag ids, new/edit/delete tags

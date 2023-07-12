@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Blogly - Tags{% endblock %}
+{% block content %}
+
+<h1>Tags</h1>
+
+{% for msg in get_flashed_messages() %}
+<p>{{ msg }}</p>
+{% endfor %}
+
+{% if not tags %}
+<p>There are no tags. Please add a tag! </p>
+{% endif %}
+
+<ul>
+    {% for t in tags %}
+    <li><a href="/tags/{{t.id}}">{{ t.name }}</a></li>
+    {% endfor %}
+</ul>
+
+<form action="/tags/new">
+    <button class="add">Add Tag</button>
+</form>
+
+{% endblock %}

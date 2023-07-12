@@ -1,4 +1,4 @@
-from models import db, User, Post
+from models import db, User, Post, Tag, PostTag
 from app import app
 
 db.drop_all()
@@ -18,3 +18,26 @@ post4 = Post(title='Steamed Hams', content="I smell bacon! I want bacon!!", crea
 
 db.session.add_all([post1, post2, post3, post4])
 db.session.commit()
+
+"""Sample Tags"""
+tag1 = Tag(name='funny')
+tag2 = Tag(name='dogs')
+tag3 = Tag(name='cats')
+tag4 = Tag(name='mad')
+
+db.session.add_all([tag1, tag2, tag3, tag4])
+db.session.commit()
+
+"""Sample PostTags"""
+tp1 = PostTag(post_id='1', tag_id='3')
+tp2 = PostTag(post_id='1', tag_id='1')
+tp3 = PostTag(post_id='2', tag_id='1')
+tp4 = PostTag(post_id='2', tag_id='2')
+tp5 = PostTag(post_id='3', tag_id='4')
+tp6 = PostTag(post_id='3', tag_id='2')
+tp7 = PostTag(post_id='4', tag_id='1')
+tp8 = PostTag(post_id='4', tag_id='2')
+
+db.session.add_all([tp1, tp2, tp3, tp4, tp5, tp6, tp7, tp8])
+db.session.commit()
+

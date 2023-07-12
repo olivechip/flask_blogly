@@ -11,8 +11,16 @@
     <h3>{{p.title}}</h3>
     <p>{{p.content}}</p>
     <p><small>By {{p.user.full_name}} on {{p.friendly_date}}</small></p>
+    {% if p.tags %}
+        <p><b>Tags: </b> 
+        {% for tag in p.tags %}
+            <a href="/tags/{{tag.id}}">{{ tag.name }}</a>
+        {% endfor %}
+    </p>
+    {% endif %}
 {% endfor %}
 
-<a href="/users">Continue to Users</a>
+<a href="/users">Continue to Users</a><br>
+<a href="/tags">Continue to Tags</a>
 
 {% endblock %}
