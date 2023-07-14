@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Blogly - Tag Details{% endblock %}
+
+{% block content %}
+
+{% for msg in get_flashed_messages() %}
+<p> {{msg}} </p>
+{% endfor %}
+
+<h1>{{ tag.name }}</h1>
+
+{% if not tag.posts %}
+<p>There are no posts with this tag.</p>
+{% endif %}
+
+<ul>
+    {% for post in tag.posts %}
+    <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+    {% endfor %}
+</ul>
+
+<form action="/tags/{{tag.id}}/edit">
+    <button class="edit">Edit</button>
+    <button class ="delete" formaction="/tags/{{tag.id}}/delete" formmethod="POST">Delete</button>
+</form>
+
+<form action="/tags">
+    <button class="cancel">Back to Tags</button>
+</form>
+
+{% endblock %}

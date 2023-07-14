@@ -14,6 +14,8 @@
 
 <p> By {{ post.user.full_name }}</p>
 
+<p><b>Tags: </b>{% for tag in post.tags %} {{tag.name}} {% endfor %}</p>
+
 <form action="/posts/{{post.id}}/edit">
     <button class="edit">Edit</button>
     <button class ="delete" formaction="/posts/{{post.id}}/delete" formmethod="POST">Delete</button>
